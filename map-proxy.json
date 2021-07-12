@@ -1,0 +1,46 @@
+[
+    {
+        "path": "google-sat",
+        "url" : "http://mt{serverpart}.google.com/vt/lyrs=s&x={x}&y={y}&z={zoom}",
+        "headers" : {
+            "user-agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        },
+        "serverpart" : [0,1],
+        "minzoom" : 1,
+        "maxzoom" : 20
+    },
+    {
+        "__comment": "You must retrieve the Cookie from an acctual web browser session once loggued into your Strava accunt, and insert the 3 required cookies in the headers session below.",
+        "path": "strava-heatmap",
+        "url" : "https://heatmap-external-{serverpart}.strava.com/tiles-auth/{sport}/{color}/{zoom}/{x}/{y}.png?px=256&v=19",
+        "serverpart" : ["a","b"],
+        "variables" : {
+            "sport" : "ride",
+            "color": "red"
+        },
+        "headers" : {
+            "user-agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "referer" : "https://www.strava.com/",
+            "origin" : "https://www.strava.com/",
+            "cookie" : "CloudFront-Policy=*******; CloudFront-Key-Pair-Id=*******; CloudFront-Signature=*******"
+        },
+        "minzoom" : 1,
+        "maxzoom" : 15
+    },
+    {
+        "__comment" : "You must have a valid account with IGN.fr and insert your KEY in the variable below. The referer header must also be set to the web site for which you own the key.",
+        "path": "ign-fr-map",
+        "url" : "https://wxs.ign.fr/{key}/geoportail/wmts?layer={layer}&style=normal&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format={format}&TileMatrix={zoom}&TileCol={x}&TileRow={y}",
+        "variables" : {
+            "key" : "***INSERT-YOUR-IGN-KEY-HERE***",
+            "layer": "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+            "format" : "image%2Fjpeg"
+        },
+        "headers" : {
+            "user-agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "referer" : "***INSERT-YOUR-WEB-SITE-HERE***"
+        },
+        "minzoom" : 1,
+        "maxzoom" : 18
+    }
+]

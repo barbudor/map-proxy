@@ -1,0 +1,38 @@
+﻿VERSION=1.0
+WEB=http://localhost:8888/google-sat/
+CACHEDX=256
+CACHEDY=256
+FORMAT=jpeg
+PIXWIDTH=268435456
+PIXHEIGHT=268435456
+MAXZOOMLEVEL=20
+LAYER=ORTHOIMAGERY.ORTHOPHOTOS
+MATRIXSET=PM
+MATRIXIDS=%ID%
+STYLE=normal
+MAPID=1770
+[IMP]
+CompeGPS MAP File
+<Header>
+Version=2
+VerCompeGPS=6.01.b
+Projection=2,Mercator,
+Coordinates=1
+Datum=WGS 84
+Description=Scan25® – © 2012 IGN– Tous droits réservés, © 2012 FFRP pour les tracés des itinéraires de randonnées et de promenade GR®, GR Pays®, PR®
+</Header>
+<Map>
+Bitmap=FILE_NAME
+BitsPerPixel=8
+BitmapWidth=268435456
+BitmapHeight=268435456
+Remote=1
+</Map>
+<Calibration>
+P0=0.00000000,0.00000000,A,-180.00000000,85.05112851
+P1=268435456.00000000,0.00000000,A,180.00000000,85.05112851
+P2=0.00000000,268435456.00000000,A,-180.00000000,-85.05112851
+</Calibration>
+
+
+
