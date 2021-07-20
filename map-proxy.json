@@ -12,7 +12,8 @@
     {
         "__comment": "You must retrieve the Cookie from an acctual web browser session once loggued into your Strava accunt, and insert the 3 required cookies in the headers session below.",
         "path": "strava-heatmap",
-        "url" : "https://heatmap-external-{serverpart}.strava.com/tiles-auth/{sport}/{color}/{zoom}/{x}/{y}.png?px=256&v=19",
+        "url" : "https://heatmap-external-{serverpart}.strava.com/tiles-auth/{sport}/{color}/{zoom}/{x}/{y}.png",
+        "params" : "px=256&v=19",
         "serverpart" : ["a","b"],
         "variables" : {
             "sport" : "ride",

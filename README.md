@@ -27,6 +27,7 @@ map-proxy configuration file is a JSON file which starts as an array of descript
 - An ignored `__comment` key for the purpose of documentation of the JSON file.
 - A mandatory `path` string which specify on witch path (single level) map-proxy will listen for this map descriptor.
 - A mandatory `url` template string which specify the URL to the real tile server. The url template contains some variables (in `{varname}` format) that will be substituted before map-proxy makes the tile requests. There are standard variables from the incoming OSM request (such as `zoom`, `x` and `y`), internal to map-proxy (such as `serverpart`) or customs variables from the JSON to specifies additional parameters such as authentication keys.
+- An optional `params` string which, if present, will be concatenated at the end of the url prefixed by a question mark.
 - An optional `variables` key-value pair list (dictionary) which provides custom variables to be substituted in the URL.
 - An optional `headers` key-value pair list which provides additional headers to be added to the GET request to the map server. This is usefull to provide `Cookie` or `Referer` headers that may be required by some servers.
 - An optional `serverpart` array which, if present, will provide a `serverpart` variable to be used in the url.
@@ -34,10 +35,10 @@ map-proxy configuration file is a JSON file which starts as an array of descript
 
 ### Expected OSM style request
 
-map-proxy expects GET request in the form of `GET http://ip.address:port/<path>/<zoom>/<x>/<y>.<fileext>` where:
+map-proxy expects GET request in the form of `GET http://ip.address:port/<path>/<zoom>/<x>/<y>.<filetype>` where:
 - `<path>` is one of the single level path from the configuration file. A request to an non defined path will be rejected with a 404 "Fie not found" HTTP error.
 - `<zoom>`, `<x>`, `<y>` specify the tile requested by its zoom level and it x,y location. For more details on the zoom, x and y, please refer to Open Street Map wiki.
-- `<fileext>` is optional file extension. map-proxy doesn't do anything specific with it but it can be used a variable for substitution in the url.
+- `<filetype>` is optional file extension. map-proxy doesn't do anything specific with it but it can be used a variable for substitution in the url.
 
 All above elements will be available as variables for substitution in the url to the real server.
 
@@ -65,7 +66,8 @@ The sample configuration entry for Strava heatmap is as below:
  {
         "__comment": "You must retrieve the Cookie from an acctual web browser session once loggued into your Strava accunt, and insert the 3 required cookies in the headers session below.",
         "path": "strava-heat",
-        "url" : "https://heatmap-external-{serverpart}.strava.com/tiles-auth/{sport}/{color}/{zoom}/{x}/{y}.png?px=256&v=19",
+        "url" : "https://heatmap-external-{serverpart}.strava.com/tiles-auth/{sport}/{color}/{zoom}/{x}/{y}.png",
+        "params": "px=256&v=19",
         "serverpart" : ["a","b"],
         "variables" : {
             "sport" : "ride",
@@ -92,9 +94,10 @@ The URL template will be used by map-proxy to build the effective request to the
 - The server name include a `{serverpart}` variable which with the `"serverpart" : ["a","b"]` configuration item will be replaced by either `a` or `b` to balance the request onto 2 different servers.
 - The `{sport}` and `{color}` variables will be subsituted by the matching variables. Using variables for this makes it more easy to tweak the file if you want to change the color or the sport you are interrested in. For more details, please refer to Strava documentation.
 - `{zoom}`, `{x}` and `{y}` will be substituted with the values from the incoming request
-- `"?px=256"` ends the request to enfore Strava to return 256x256 tiles (default is 512x512) as most mapping software prefer 256x256.
 
-The custom `variables` entries just specify the values to be substituted for `{sport}` and `{color`}.
+The `params` string `px=256&v=19` will be prefixed by a `?` and added at the end of the URL sent to the tile server. This allows to easily add some parameters to the GET request. Concatenation is done before variables are susbsituted so `params` can also contains variables. This helps to make the URL more readable although parameters could have been added directly in the URL like it was done in v0.1.0. In this particular exemple, it instruct Strava server to return 256x56 pixels tiles which is the most common.
+
+The custom `variables` entries specifies the values to be substituted for `{sport}` and `{color`} in the URL. It could have been hardcoded in the URL but this helps making the entry more readable.
 
 The `headers` entries will be added to the request.
 - `user-agent` let Strava believe the request is made from a browser.
@@ -113,8 +116,8 @@ In the `twonav-land-map-samples` you will find some sample `*.cosm` map files th
 
 **I will not provide any help on how to configure map-proxy for site XXX or YYY, do your homework first.**
 
-Especially I will not answer to any question regarding circuventing access to licensed map server (I would probably have no idea on how to do so). **map-proxy is not meant to do that**. When authentication is required, you must have the needed information to configure map-proxy.
+Especially I will not answer to any question regarding circuventing access to a licensed map server (I would probably have no idea on how to do so). **map-proxy is not meant to do that**. When authentication is required, you must have the needed information to configure map-proxy.
 
 Generally, logging and navigating the site with Chrome or Firefox developper tool open should provide the needed information. In some cases, the request expected by the remote server may be complex and may not be supported with map-proxy simple scheme. If such a method is openly documented, I may be able to extended map-proxy capabilities.
 
-Only request that can be related to a bug in map-proxy may be answered depending on y spare time.
+Only request that can be related to a bug in map-proxy may be answered depending on my spare time.

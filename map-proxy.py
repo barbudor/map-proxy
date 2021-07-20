@@ -44,7 +44,10 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             items['serverpart'] = map['serverpart'][server];
 
         # print(repr(items))
-        url = map['url'].format(**items)
+        url = map['url']
+        if map.get('params', None) != None:
+            url += "?" + map['params']
+        url = url.format(**items)
         # print("url=",url)
 
         r = requests.get(url, headers=map['headers'])
@@ -99,7 +102,7 @@ def main():
         print("File %s not found - aborting"%args.cfg)
         exit(1)
 
-    print("map-proxy (v%s) started with configuration file %s on port %d"%(__version__, args.cfg, args.port))
+    print("map-proxy (v%s) started on port %d with configuration file %s"%(__version__, args.port, args.cfg))
 
     # launch web server
     httpd = ThreadingHTTPServer(('localhost', args.port), MyHTTPRequestHandler)
